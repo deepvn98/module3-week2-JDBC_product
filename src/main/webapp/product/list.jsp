@@ -15,7 +15,7 @@
 <body>
 <a href="/ProductServlet?action=create">Thêm mới</a>
 <br>
-<form action="" method="post">
+<form action="" method="get">
     <fieldset>
         <legend>Danh Sách Sản Phẩm</legend>
         <table border="1" width="70%">
@@ -32,13 +32,12 @@
                     <td>${list.getId()}</td>
                     <td>${list.getName()}</td>
                     <td>${list.getPrice()}</td>
-                    <td>${list.getDescribe()}</td>
+                    <td>${list.getDescriber()}</td>
                     <td>${list.getProducer()}</td>
-                    <td>Edit</td>
-                    <td>Delete</td>
+                    <td><a href="/ProductServlet?action=edit&id=${list.getId()}">Edit</a></td>
+                    <td><a href="/ProductServlet?action=delete&id=${list.getId()}">Delete</a></td>
                 </tr>
             </c:forEach>
-
 
         </table>
     </fieldset>

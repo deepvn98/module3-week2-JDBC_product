@@ -4,6 +4,7 @@ import model.Product;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class ProductJDBC implements ProductInterface{
@@ -55,7 +56,7 @@ public class ProductJDBC implements ProductInterface{
             PreparedStatement  statement = connection.prepareStatement("insert into productlist.jdbcproduct(name, price, describer, producer) value (?,?,?,?)");
             statement.setString(1,product.getName());
             statement.setDouble(2,product.getPrice());
-            statement.setString(3,product.getDescribe());
+            statement.setString(3,product.getDescriber());
             statement.setString(4,product.getProducer());
             statement.executeUpdate();
         } catch (SQLException throwables) {
@@ -66,17 +67,52 @@ public class ProductJDBC implements ProductInterface{
 
     @Override
     public void update(int id, Product product) {
-
+        Connection connection = getConnection();
+        try {
+            PreparedStatement prepareStatement = connection.prepareStatement("update jdbcproduct set name =? price = ? describer = ? proceducer = ? ");
+            prepareStatement.setString(1,product.getName());
+            prepareStatement.setDouble(2,product.getPrice());
+            prepareStatement.setString(3,product.getDescriber());
+            prepareStatement.setString(4,product.getProducer());
+            prepareStatement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     @Override
     public void remove(int id) {
-
+        List<Product> productList = showAll();
+        Iterator<Product> iterator = productList.listIterator();
+        while (iterator.hasNext()) {
+            Product product = iterator.next();
+            if (product.getId() == id) {
+                iterator.remove();
+            }
+        }
     }
 
     @Override
     public Product getProductByID(int id) {
-        return null;
+        Product product= null;
+        Connection connection = getConnection();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from JDBCproduct where id = ?");
+            preparedStatement.setInt(1,id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                int id1 = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                double price = resultSet.getDouble("price");
+                String describer= resultSet.getString("describer");
+                String producer= resultSet.getString("producer");
+                product = new Product(id1,name,price,describer,producer);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return product;
+
     }
 
     @Override
