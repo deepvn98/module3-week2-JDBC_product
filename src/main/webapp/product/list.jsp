@@ -15,7 +15,7 @@
 <body>
 <a href="/ProductServlet?action=create">Thêm mới</a>
 <br>
-<form action="" method="get">
+<form action="" method="post">
     <fieldset>
         <legend>Danh Sách Sản Phẩm</legend>
         <table border="1" width="70%">
@@ -25,14 +25,17 @@
                 <th>Price</th>
                 <th>describer</th>
                 <th>Producer</th>
+                <th colspan="2">Action</th>
             </tr>
             <c:forEach items="${danhsach}" var="list">
                 <tr>
-                    <td>${list.id}</td>
-                    <td>${list.name}</td>
-                    <td>${list.price}</td>
-                    <td>${list.describer}</td>
-                    <td>${list.producer}</td>
+                    <td>${list.getId()}</td>
+                    <td>${list.getName()}</td>
+                    <td>${list.getPrice()}</td>
+                    <td>${list.getDescribe()}</td>
+                    <td>${list.getProducer()}</td>
+                    <td>Edit</td>
+                    <td>Delete</td>
                 </tr>
             </c:forEach>
 

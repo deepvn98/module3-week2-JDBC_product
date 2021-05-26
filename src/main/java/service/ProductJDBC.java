@@ -37,7 +37,7 @@ public class ProductJDBC implements ProductInterface{
                 int id = resultSet.getInt("id");
                 String name = resultSet.getString("name");
                 double price = resultSet.getDouble("price");
-                String describe = resultSet.getString("describe");
+                String describe = resultSet.getString("describer");
                 String producer = resultSet.getString("producer");
                 Product product = new Product(id,name,price,describe,producer);
                 productList.add(product);
@@ -50,6 +50,17 @@ public class ProductJDBC implements ProductInterface{
 
     @Override
     public void create(Product product) {
+        Connection connection = getConnection();
+        try {
+            PreparedStatement  statement = connection.prepareStatement("insert into productlist.jdbcproduct(name, price, describer, producer) value (?,?,?,?)");
+            statement.setString(1,product.getName());
+            statement.setDouble(2,product.getPrice());
+            statement.setString(3,product.getDescribe());
+            statement.setString(4,product.getProducer());
+            statement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
 
     }
 

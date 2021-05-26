@@ -3,7 +3,6 @@ package controller;
 import model.Product;
 import service.ProductInterface;
 import service.ProductJDBC;
-import service.ProductService;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -23,7 +22,7 @@ public class ProductServlet extends HttpServlet {
        }
        switch (action){
            case "create":
-               showFormProduct(request, response);
+               showFormCreateProduct(request, response);
                break;
            case "edit":
                break;
@@ -32,8 +31,6 @@ public class ProductServlet extends HttpServlet {
            default:
                showAll(request, response);
                break;
-
-
        }
 
     }
@@ -48,15 +45,15 @@ public class ProductServlet extends HttpServlet {
         response.sendRedirect("/ProductServlet");
     }
 
-    private void showFormProduct(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/product/create.jsp");
+    private void showFormCreateProduct(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("product/create.jsp");
         requestDispatcher.forward(request,response);
 
     }
 
 
     private void showAll(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/product/list.jsp");
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("product/list.jsp");
         List<Product> productList = productService.showAll();
         request.setAttribute("danhsach",productList);
         requestDispatcher.forward(request, response);
