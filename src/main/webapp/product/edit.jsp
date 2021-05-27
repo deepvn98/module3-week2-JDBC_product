@@ -24,10 +24,10 @@
                 <th>Producer</th>
             </tr>
             <tr>
-                <td><input value="${product.name}"></td>
-                <td><input value="${product.price}"></td>
-                <td><input value="${product.describer}"></td>
-                <td><input value="${product.producer}"></td>
+                <td><input value="${product.name}" name="name" type="text"></td>
+                <td><input value="${product.price}" name="price" type="number"></td>
+                <td><input value="${product.describer}" name="describer" type="text"></td>
+                <td><input value="${product.producer}" name="producer" type="text"></td>
                 <td><input type="submit" value="Edit"></td>
             </tr>
 

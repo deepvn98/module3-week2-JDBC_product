@@ -4,7 +4,6 @@ import model.Product;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class ProductJDBC implements ProductInterface{
@@ -32,7 +31,8 @@ public class ProductJDBC implements ProductInterface{
         Connection connection = getConnection();
         List<Product> productList = new ArrayList<>();
         try {
-            PreparedStatement statement = connection.prepareStatement("select * from jdbcproduct");
+            PreparedStatement statement = connection.prepareStatement(
+                    "select * from jdbcproduct");
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
                 int id = resultSet.getInt("id");
@@ -69,7 +69,9 @@ public class ProductJDBC implements ProductInterface{
     public void update(int id, Product product) {
         Connection connection = getConnection();
         try {
-            PreparedStatement prepareStatement = connection.prepareStatement("update jdbcproduct set name =? price = ? describer = ? proceducer = ? ");
+            PreparedStatement prepareStatement = connection.prepareStatement(
+                    "update jdbcproduct set name =?, price = ?, describer = ?, producer = ? where id = ?");
+            prepareStatement.setInt(5,product.getId());
             prepareStatement.setString(1,product.getName());
             prepareStatement.setDouble(2,product.getPrice());
             prepareStatement.setString(3,product.getDescriber());
@@ -82,14 +84,15 @@ public class ProductJDBC implements ProductInterface{
 
     @Override
     public void remove(int id) {
-        List<Product> productList = showAll();
-        Iterator<Product> iterator = productList.listIterator();
-        while (iterator.hasNext()) {
-            Product product = iterator.next();
-            if (product.getId() == id) {
-                iterator.remove();
-            }
+        Connection connection = getConnection();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("delete from jdbcproduct where id = ?");
+            preparedStatement.setInt(1,id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
+
     }
 
     @Override
